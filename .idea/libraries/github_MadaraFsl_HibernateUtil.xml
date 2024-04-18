@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="github.MadaraFsl.HibernateUtil" type="repository">
+    <properties maven-id="com.github.MadaraFsl:HibernateUtil:0.0.1-RELEASE" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/MadaraFsl/HibernateUtil/0.0.1-RELEASE/HibernateUtil-0.0.1-RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
