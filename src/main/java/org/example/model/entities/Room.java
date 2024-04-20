@@ -10,41 +10,50 @@ import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "hotel")
 @Component
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel  implements Comparable<Hotel>, Subject {
+public class Room implements Comparable<Room>, Subject{
     @Id
     @GeneratedValue
     @Column(name="ID",columnDefinition = "char(36)")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
 
-    @NotNull
-    @Column(unique = true, length = 20, name = "nume")
-    private String name;
+    @Column(unique = true, length = 20, name = "numar_camera")
+    private String nrRoom;
 
     @NotNull
-    @Column(length = 50, name="address")
-    private String address;
+    @Column(length = 50, name="pret")
+    private Double price;
 
     @NotNull
-    @Column(length = 50, name="nr_rooms")
-    private Integer nrRooms;
+    @Column(length = 50, name="disponibilitate")
+    private Boolean isAvailable;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Room> rooms;
+    @NotNull
+    @Column(name="pozitie_camera")
+    @Enumerated(EnumType.STRING)
+    private RoomFloor floor;
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<RoomFacilities> facilities;
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.DETACH)
+    @JoinColumn(name = "location")
+    private Hotel location;
 
     @Override
-    public int compareTo(Hotel o) {
-        return this.name.compareTo(o.getName());
+    public int compareTo(Room o) {
+        return this.location.compareTo(o.getLocation());
     }
 
     @Override

@@ -1,201 +1,156 @@
 package org.example.view;
 
-import org.example.model.entities.FacilitatiCamera;
-import org.example.model.entities.PozitieCamera;
-import org.example.model.entities.PozitieCameraMapper;
-import org.example.model.entities.TipUtilizator;
-import org.example.controller.AngajatRoomsViewController;
-import org.example.controller.ClientRoomsViewController;
+import org.example.controller.EmployeeRoomsController;
+import org.example.controller.ClientRoomsController;
+import org.example.model.entities.RoomFacilities;
+import org.example.model.entities.RoomFloor;
+import org.example.model.entities.RoomFloorMapper;
+import org.example.model.entities.UserType;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class RoomsView implements IRoomsView, IAbstractView {
+public class RoomsView implements Observer {
     private JPanel mainJPanel;
-    private JLabel titluLabel;
-    private JButton adaugaCameraButton;
-    private JButton actualizeazaButton;
+    private JLabel titleLabel;
+    private JButton addCameraButton;
+    private JButton updateButton;
     private JComboBox filterByComboBox;
     private JButton searchButton;
     private JTable table;
     private JLabel searchLabel;
-    private JButton stergeButton;
+    private JButton deleteButton;
     private JLabel filterByLabel;
     private JComboBox searchByComboBox;
     private JButton filterBtn;
     private JPanel crudPanel;
-    private JTextField numarCameraTextField;
-    private JTextField pretTextField;
-    private JTextField disponibilitateTextField;
-    private JTextField pozitieTextField;
-    private JTextField locatieTextField;
-    private TipUtilizator userLogged;
-    private ClientRoomsViewController clientRoomsViewController;
-    private AngajatRoomsViewController angajatRoomsViewController;
+    private JTextField numberRoomTextField;
+    private JTextField priceTextField;
+    private JTextField isAvailableTextField;
+    private JTextField floorTextField;
+    private JTextField locationTextField;
+    private final UserType userLogged;
+    private final ClientRoomsController clientRoomsController;
+    private final EmployeeRoomsController employeeRoomsController;
 
-    public RoomsView(TipUtilizator userLogged) {
+    public RoomsView(UserType userLogged) {
         filterByComboBox.setModel(new DefaultComboBoxModel(generateFilterList().toArray()));
-        clientRoomsViewController = new ClientRoomsViewController(this);
-        angajatRoomsViewController = new AngajatRoomsViewController(this);
+        clientRoomsController = new ClientRoomsController(this);
+        employeeRoomsController = new EmployeeRoomsController(this);
         List<String> searchByList = new ArrayList<>();
-        searchByList.add("Locatie");
-        searchByList.add("Numar");
+        searchByList.add("Location");
+        searchByList.add("Number");
         searchByComboBox.setModel(new DefaultComboBoxModel(searchByList.toArray()));
         this.userLogged = userLogged;
         System.out.println(userLogged);
-        if (userLogged == TipUtilizator.ANGAJAT) {
-            adaugaCameraButton.setVisible(true);
-            actualizeazaButton.setVisible(true);
-            stergeButton.setVisible(true);
+        if (userLogged == UserType.EMPLOYEE) {
+            addCameraButton.setVisible(true);
+            updateButton.setVisible(true);
+            deleteButton.setVisible(true);
             crudPanel.setVisible(true);
         } else {
-            adaugaCameraButton.setVisible(false);
-            actualizeazaButton.setVisible(false);
-            stergeButton.setVisible(false);
+            addCameraButton.setVisible(false);
+            updateButton.setVisible(false);
+            deleteButton.setVisible(false);
             crudPanel.setVisible(false);
         }
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clientRoomsViewController.populateTableAferSearch();
-            }
-        });
-        filterBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clientRoomsViewController.populateTableAfterFilter(List.of(FacilitatiCamera.values()));
-            }
-        });
-        adaugaCameraButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                angajatRoomsViewController.addCamera();
-            }
-        });
-        actualizeazaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                angajatRoomsViewController.updateCamera();
-            }
-        });
-        stergeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                angajatRoomsViewController.deleteCamera();
-            }
-        });
+        searchButton.addActionListener(e -> clientRoomsController.populateTableAfterSearch());
+        filterBtn.addActionListener(e -> clientRoomsController.populateTableAfterFilter(List.of(RoomFacilities.values())));
+        addCameraButton.addActionListener(e -> employeeRoomsController.addCamera());
+        updateButton.addActionListener(e -> employeeRoomsController.updateCamera());
+        deleteButton.addActionListener(e -> employeeRoomsController.deleteCamera());
     }
 
     private List<String> generateFilterList() {
         List<String> filterList = new ArrayList<>();
-        filterList.add("Facilitati");
-        filterList.add("Disponibilitate");
-        filterList.add("Pret");
-        // adauga pozitiile camerelor la lista
-        List<PozitieCamera> pozitieCameraList = List.of(PozitieCamera.values());
-        for (PozitieCamera pozitieCamera : pozitieCameraList) {
-            String pozitieCameraString = PozitieCameraMapper.mapToPozitieString(pozitieCamera);
-            if (!pozitieCameraString.isEmpty()) {
-                filterList.add(pozitieCameraString);
+        filterList.add("Facilities");
+        filterList.add("Availability");
+        filterList.add("Price");
+        List<RoomFloor> roomFloorList = List.of(RoomFloor.values());
+        for (RoomFloor roomFloor : roomFloorList) {
+            String roomFloorString = RoomFloorMapper.mapToFloorString(roomFloor);
+            if (!roomFloorString.isEmpty()) {
+                filterList.add(roomFloorString);
             }
         }
         return filterList;
     }
 
-    @Override
     public JPanel getMainPanel() {
         return this.mainJPanel;
     }
 
-    @Override
     public String getSelectedSearchByValue() {
         return (String) searchByComboBox.getSelectedItem();
     }
 
-    @Override
     public String getSelectedFilterByValue() {
         return (String) filterByComboBox.getSelectedItem();
     }
 
 
-    @Override
     public void updateTable(JTable table, DefaultTableModel model) {
-        model = clientRoomsViewController.populateTableAferSearch();
+        model = clientRoomsController.populateTableAfterSearch();
         table.setModel(model);
     }
 
-    @Override
     public JTable getTable() {
         return table;
     }
 
 
-    @Override
     public void setTable(DefaultTableModel model) {
         table.setModel(model);
     }
 
-    @Override
     public JPanel getCrudJPanel() {
         return this.crudPanel;
     }
 
-    @Override
-    public String getNumarCamera() {
-        return this.numarCameraTextField.getText();
+    public String getRoomNumber() {
+        return this.numberRoomTextField.getText();
     }
 
-    @Override
-    public void setNumarCamera(String numarCamera) {
-        this.numarCameraTextField.setText(numarCamera);
+    public void setRoomNumber(String roomNumber) {
+        this.numberRoomTextField.setText(roomNumber);
     }
 
-    @Override
-    public String getPretCamera() {
-        return this.pretTextField.getText();
+    public String getPriceRoom() {
+        return this.priceTextField.getText();
     }
 
-    @Override
-    public void setPretCamera(String pret) {
-        this.pretTextField.setText(pret);
+    public void setPriceRoom(String priceRoom) {
+        this.priceTextField.setText(priceRoom);
     }
 
-    @Override
-    public String getDisponibiliate() {
-        return this.disponibilitateTextField.getText();
+    public String getAvailability() {
+        return this.isAvailableTextField.getText();
     }
 
-    @Override
-    public void setDisponibilitate(String disponibilitate) {
-        this.disponibilitateTextField.setText(disponibilitate);
+    public void setAvailability(String availability) {
+        this.isAvailableTextField.setText(availability);
     }
 
-    @Override
-    public String getPozitie() {
-        return this.pozitieTextField.getText();
+    public String getFloor() {
+        return this.floorTextField.getText();
     }
 
-    @Override
-    public void setPozitie(String pozitie) {
-        this.pozitieTextField.setText(pozitie);
+    public void setFloor(String floor) {
+        this.floorTextField.setText(floor);
     }
 
-    @Override
-    public String getLocatie() {
-        return this.locatieTextField.getText();
+    public String getLocation() {
+        return this.locationTextField.getText();
     }
 
-    @Override
-    public void setLocatie(String locatie) {
-        this.locatieTextField.setText(locatie);
+    public void setLocation(String location) {
+        this.locationTextField.setText(location);
     }
 
     /**
@@ -221,4 +176,8 @@ public class RoomsView implements IRoomsView, IAbstractView {
     }
 
 
+    @Override
+    public void update() {
+
+    }
 }

@@ -31,7 +31,7 @@ public class ApplicationTest {
         // Create a test object
         Hotel hotel = new Hotel();
         hotel.setId(UUID.randomUUID());
-        hotel.setNume("Cavo Tagoo");
+        hotel.setName("Cavo Tagoo");
 
         // Set the session factory of the DAO to use the mock session
         HibernateUtil.setSessionFactory(mock(SessionFactory.class));
@@ -60,7 +60,7 @@ public class ApplicationTest {
 
         Hotel hotel = new Hotel();
         hotel.setId(UUID.randomUUID());
-        hotel.setNume("CavoTagoo");
+        hotel.setName("CavoTagoo");
 
         // Set the session factory of the DAO to use the mock session
         HibernateUtil.setSessionFactory(mock(SessionFactory.class));
@@ -88,7 +88,7 @@ public class ApplicationTest {
         Hotel hotel = new Hotel();
         UUID id = UUID.randomUUID();
         hotel.setId(id);
-        hotel.setNume("CavoTagoo");
+        hotel.setName("CavoTagoo");
 
         // mock the session factory and openSession() method
         HibernateUtil.setSessionFactory(mock(SessionFactory.class));
@@ -122,7 +122,7 @@ public class ApplicationTest {
         Hotel hotel = new Hotel();
         UUID id = UUID.randomUUID();
         hotel.setId(id);
-        hotel.setNume("CavoTagoo");
+        hotel.setName("CavoTagoo");
 
         // Configure the session to return the test object when get() is called
         when(mockSession.get(Hotel.class, id)).thenReturn(hotel);

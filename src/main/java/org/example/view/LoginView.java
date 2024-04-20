@@ -2,55 +2,43 @@ package org.example.view;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.example.model.entities.TipUtilizator;
 import org.example.controller.LoginController;
+import org.example.model.entities.UserType;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 
-public class LoginView implements ILoginView {
+public class LoginView implements Observer {
     private JPanel mainPanel;
     private JLabel iconLabel;
     private JPanel formPanel;
     private JLabel emailLabel;
-    private JLabel parolaLabel;
+    private JLabel passwordLabel;
     private JTextField emailTextField;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private LoginController loginController;
-    private TipUtilizator userLogged;
+    private final LoginController loginController;
+    private final UserType userLogged;
 
-    public LoginView(TipUtilizator utilizator) {
-        this.userLogged = utilizator;
-
+    public LoginView(UserType userType) {
+        this.userLogged = userType;
         loginController = new LoginController(this);
-
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loginController.login(userLogged);
-            }
-        });
+        loginButton.addActionListener(e -> loginController.login(userLogged));
     }
 
-    @Override
     public String getEmail() {
         System.out.println(this.emailTextField.getText());
         return this.emailTextField.getText();
     }
 
-    @Override
     public String getPassword() {
         System.out.println(this.passwordField.getPassword());
         return new String(this.passwordField.getPassword());
     }
 
-    @Override
     public JPanel getMainPanel() {
         return this.mainPanel;
     }
@@ -92,12 +80,12 @@ public class LoginView implements ILoginView {
         emailLabel.setForeground(new Color(-16760389));
         emailLabel.setText("Email:");
         formPanel.add(emailLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        parolaLabel = new JLabel();
-        Font parolaLabelFont = this.getFont("Arial Rounded MT Bold", Font.BOLD, 14, parolaLabel.getFont());
-        if (parolaLabelFont != null) parolaLabel.setFont(parolaLabelFont);
-        parolaLabel.setForeground(new Color(-16760389));
-        parolaLabel.setText("Parola:");
-        formPanel.add(parolaLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        passwordLabel = new JLabel();
+        Font parolaLabelFont = this.getFont("Arial Rounded MT Bold", Font.BOLD, 14, passwordLabel.getFont());
+        if (parolaLabelFont != null) passwordLabel.setFont(parolaLabelFont);
+        passwordLabel.setForeground(new Color(-16760389));
+        passwordLabel.setText("Parola:");
+        formPanel.add(passwordLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         emailTextField = new JTextField();
         emailTextField.setBackground(new Color(-6308366));
         formPanel.add(emailTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
@@ -134,5 +122,10 @@ public class LoginView implements ILoginView {
         boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
         Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
+    }
+
+    @Override
+    public void update() {
+
     }
 }

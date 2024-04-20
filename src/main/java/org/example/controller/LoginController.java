@@ -1,44 +1,40 @@
 package org.example.controller;
 
-import lombok.AllArgsConstructor;
-import org.example.model.entities.TipUtilizator;
-import org.example.model.entities.Utilizator;
-import org.example.model.repository.UtilizatorRepo;
+import org.example.model.entities.User;
+import org.example.model.entities.UserType;
+import org.example.model.repository.UserRepository;
 import org.example.single_point_access.GUIFrameSinglePointAccess;
-import org.example.view.ILoginView;
-import org.example.view.MeniuAdminView;
-import org.example.view.MeniuAngajatView;
-import org.springframework.stereotype.Service;
+import org.example.view.AdminMenuView;
+import org.example.view.EmployeeMenuView;
+import org.example.view.LoginView;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-// metode fara parametrii
+@Controller
 public class LoginController {
-    private UtilizatorRepo utilizatorRepo = new UtilizatorRepo();
-    private ILoginView iLoginView;
-    public LoginController(ILoginView iLoginView){
-        this.iLoginView = iLoginView;
+    private final UserRepository userRepository;
+    private final LoginView loginView;
+
+    public LoginController(LoginView loginView){
+        this.loginView = loginView;
+        this.userRepository = new UserRepository();
     }
-    public void login(TipUtilizator userLogged){
-        // TODO: METODA CARE OBTINE TIPUL DE UTILIZATOR
 
-        List<Utilizator> utilizatori = utilizatorRepo.readAll();
-        String email = iLoginView.getEmail();
-        String password = iLoginView.getPassword();
+    public void login(UserType userLogged){
+        List<User> users = userRepository.readAll();
+        String email = loginView.getEmail();
+        String password = loginView.getPassword();
 
-        for(Utilizator utilizator : utilizatori){
-            if(utilizator.getEmail().equals(email) && utilizator.getParola().equals(password)){
-                if(userLogged == TipUtilizator.ANGAJAT){
-                    MeniuAngajatView meniuAngajatView = new MeniuAngajatView();
-                    GUIFrameSinglePointAccess.changePanel(meniuAngajatView.getMainPanel(), "Meniu");
-                } else if (userLogged == TipUtilizator.ADMINISTRATOR) {
-                    MeniuAdminView meniuAdminView = new MeniuAdminView();
-                    GUIFrameSinglePointAccess.changePanel(meniuAdminView.getJPanel(), "Meniu");
+        for(User user : users){
+            if(user.getEmail().equals(email) && user.getPassword().equals(password)){
+                if(userLogged == UserType.EMPLOYEE){
+                    EmployeeMenuView employeeMenuView = new EmployeeMenuView();
+                    GUIFrameSinglePointAccess.changePanel(employeeMenuView.getMainPanel(), "Menu");
+                } else if (userLogged == UserType.ADMINISTRATOR) {
+                    AdminMenuView adminMenuView = new AdminMenuView();
+                    GUIFrameSinglePointAccess.changePanel(adminMenuView.getJPanel(), "Menu");
                 }
-//                RoomsView roomsView = new RoomsView(userLogged);
-//                GUIFrameSinglePointAccess.changePanel(roomsView.getMainPanel(), "Rooms");
             }
         }
     }

@@ -19,8 +19,6 @@ public class AbstractRepository <T>{
             session.save(o);
             transaction.commit();
         }catch (Exception e){
-            // anularea unei tranzactii
-            // se readuce baza de date la starea in care se afla inainte de inceperea tranzactiei
             if (transaction != null){
                 transaction.rollback();
             }
@@ -57,11 +55,8 @@ public class AbstractRepository <T>{
     }
 
     public List<T> readAll(){
-        // se obtine o clasa de tipul entitatii pentru care se doreste sa se efectueze operatia de citire
         Class<T> type = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        // deschiderea sesiunii hibernate
         Session session = HibernateUtil.getSessionFactory().openSession();
-        // se construieste o interogare
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(type);
         Root<T> rootEntry = cq.from(type);

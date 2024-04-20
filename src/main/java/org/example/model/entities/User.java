@@ -10,17 +10,15 @@ import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "hotel")
 @Component
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel  implements Comparable<Hotel>, Subject {
+public class User implements Subject {
     @Id
     @GeneratedValue
     @Column(name="ID",columnDefinition = "char(36)")
@@ -28,24 +26,21 @@ public class Hotel  implements Comparable<Hotel>, Subject {
     private UUID id;
 
     @NotNull
-    @Column(unique = true, length = 20, name = "nume")
+    @Column(length = 50, name="nume")
     private String name;
 
     @NotNull
-    @Column(length = 50, name="address")
-    private String address;
+    @Column(length = 50, name="email")
+    private String email;
 
     @NotNull
-    @Column(length = 50, name="nr_rooms")
-    private Integer nrRooms;
+    @Column(length = 50, name="parola")
+    private String password;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Room> rooms;
-
-    @Override
-    public int compareTo(Hotel o) {
-        return this.name.compareTo(o.getName());
-    }
+    @NotNull
+    @Column(name="tip_utilizator")
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @Override
     public void attach(Observer o) {

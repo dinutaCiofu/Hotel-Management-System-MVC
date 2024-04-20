@@ -19,11 +19,11 @@
 
         <!--         Map Java Class to DB Entity-->
 
-        <mapping class="org.example.model.entities.Camera"/>
-        <mapping class="org.example.model.entities.FacilitatiCamera"/>
+        <mapping class="org.example.model.entities.Room"/>
+        <mapping class="org.example.model.entities.RoomFacilities"/>
         <mapping class="org.example.model.entities.Hotel"/>
-        <mapping class="org.example.model.entities.PozitieCamera"/>
-        <mapping class="org.example.model.entities.TipUtilizator"/>
-        <mapping class="org.example.model.entities.Utilizator"/>
+        <mapping class="org.example.model.entities.RoomFloor"/>
+        <mapping class="org.example.model.entities.UserType"/>
+        <mapping class="org.example.model.entities.User"/>
     </session-factory>
 </hibernate-configuration>
