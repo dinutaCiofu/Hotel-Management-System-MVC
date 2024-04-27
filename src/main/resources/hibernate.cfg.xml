@@ -7,7 +7,7 @@
 
         <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tema1_mvp</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tema3_mvc</property>
 
         <!--Replace with your MySQL username and password-->
         <property name="hibernate.connection.username">root</property>
@@ -25,5 +25,6 @@
         <mapping class="org.example.model.entities.RoomFloor"/>
         <mapping class="org.example.model.entities.UserType"/>
         <mapping class="org.example.model.entities.User"/>
+        <mapping class="org.example.model.entities.Reservation"/>
     </session-factory>
 </hibernate-configuration>

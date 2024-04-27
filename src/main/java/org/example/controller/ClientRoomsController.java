@@ -1,18 +1,13 @@
 package org.example.controller;
 
-import org.example.model.entities.Hotel;
-import org.example.model.entities.Room;
-import org.example.model.entities.RoomFacilities;
-import org.example.model.entities.RoomFloorMapper;
+import org.example.model.entities.*;
 import org.example.model.repository.HotelRepository;
 import org.example.model.repository.RoomRepository;
 import org.example.view.RoomsView;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,18 +20,15 @@ public class ClientRoomsController {
         this.roomsView = roomsView;
         this.roomRepository = new RoomRepository();
         this.hotelRepository = new HotelRepository();
+        this.roomsView.getFilterBtn().addActionListener(e -> populateTableAfterFilter(List.of(RoomFacilities.AC, RoomFacilities.TV)));
+        this.roomsView.getSearchButton().addActionListener(e -> populateTableAfterSearch());
     }
 
     public DefaultTableModel setTableColumns() {
         DefaultTableModel model = new DefaultTableModel();
         List<String> columns = List.of("ID", "numberRoom", "price", "isAvailable", "floor", "location");
         model.setRowCount(0);
-        model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return true;
-            }
-        };
+        model = new DefaultTableModel() {};
 
         for (String column : columns) {
             model.addColumn(column);
@@ -48,7 +40,7 @@ public class ClientRoomsController {
 
         if (room.getLocation() != null) {
             System.out.println("Existing hotel");
-            UUID hotelId = room.getLocation().getId();
+            Integer hotelId = room.getLocation().getId();
             Hotel hotel = hotelRepository.findById(hotelId);
             if (hotel != null) {
                 return hotel.getName();
@@ -62,7 +54,7 @@ public class ClientRoomsController {
 
     public void setTableRows(DefaultTableModel model, List<Room> rooms) {
         for (Room room : rooms) {
-            UUID id = room.getId();
+            Integer id = room.getId();
             String numberRoom = room.getNrRoom();
             String price = String.valueOf(room.getPrice());
             String isAvailable = room.getIsAvailable() ? "Available" : "Unavailable";
@@ -73,43 +65,51 @@ public class ClientRoomsController {
         }
     }
 
-    public DefaultTableModel populateTableAfterSearch() {
+    public void populateTableAfterSearch() {
         DefaultTableModel model = setTableColumns();
         List<Room> rooms = roomRepository.readAll();
 
-        if (roomsView.getSelectedSearchByValue().equals("Number")) {
+        if (Objects.requireNonNull(roomsView.getSearchByComboBox().getSelectedItem()).equals("Number")) {
             rooms.sort(Comparator.comparing(Room::getNrRoom));
-        } else if (roomsView.getSelectedSearchByValue().equals("Location")) {
+        } else if (roomsView.getSearchByComboBox().getSelectedItem().equals("Location")) {
             rooms.sort(Comparator.comparing(Room::getLocation));
         }
+
+        setTableRows(model, rooms);
+        roomsView.setTable(model);
+    }
+
+    public DefaultTableModel populateTable() {
+        DefaultTableModel model = setTableColumns();
+        List<Room> rooms = roomRepository.readAll();
         setTableRows(model, rooms);
         roomsView.setTable(model);
         return model;
     }
 
-    public DefaultTableModel populateTableAfterFilter(List<RoomFacilities> facilities) {
+    public void populateTableAfterFilter(List<RoomFacilities> facilities) {
         DefaultTableModel model = setTableColumns();
         List<Room> rooms = roomRepository.readAll();
 
-        if (!facilities.isEmpty() && roomsView.getSelectedFilterByValue().equals("Facilities")) {
+        if (!facilities.isEmpty() && Objects.requireNonNull(roomsView.getFilterByComboBox().getSelectedItem()).equals("Facilities")) {
             rooms = rooms.stream()
-                    .filter(camera -> camera.getFacilities().containsAll(facilities))
+                    .filter(room -> room.getFacilities().stream().anyMatch(facilities::contains))
                     .collect(Collectors.toList());
-        } else if (roomsView.getSelectedFilterByValue().equals("isAvailable")) {
+
+        } else if (Objects.requireNonNull(roomsView.getFilterByComboBox().getSelectedItem()).equals("Availability")) {
             rooms = rooms.stream()
-                    .filter(camera -> camera.getIsAvailable().equals(true))
+                    .filter(room -> room.getIsAvailable().equals(true))
                     .collect(Collectors.toList());
-        } else if (roomsView.getSelectedFilterByValue().equals("Price")) {
+        } else if (roomsView.getFilterByComboBox().getSelectedItem().equals("Price")) {
             rooms.sort(Comparator.comparing(Room::getPrice));
         } else {
-            String selectedPosition = roomsView.getSelectedFilterByValue();
+            String selectedPosition = roomsView.getFilterByComboBox().getSelectedItem().toString();
             rooms = rooms.stream()
-                    .filter(camera -> RoomFloorMapper.mapToFloorString(camera.getFloor()).equalsIgnoreCase(selectedPosition))
+                    .filter(room -> RoomFloorMapper.mapToFloorString(room.getFloor()).equalsIgnoreCase(selectedPosition))
                     .collect(Collectors.toList());
         }
 
         setTableRows(model, rooms);
         roomsView.setTable(model);
-        return model;
     }
 }

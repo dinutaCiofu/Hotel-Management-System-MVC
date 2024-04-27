@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.view.Observer;
-import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Component
@@ -20,40 +20,42 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User implements Subject {
     @Id
-    @GeneratedValue
-    @Column(name="ID",columnDefinition = "char(36)")
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotNull
-    @Column(length = 50, name="nume")
     private String name;
 
     @NotNull
-    @Column(length = 50, name="email")
     private String email;
 
     @NotNull
-    @Column(length = 50, name="parola")
     private String password;
 
     @NotNull
-    @Column(name="tip_utilizator")
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
+    @Transient
+    private List<Observer> observers = new ArrayList<>();
+
     @Override
     public void attach(Observer o) {
-
+        observers.add(o);
     }
 
     @Override
     public void detach(Observer o) {
-
+        observers.remove(o);
     }
 
     @Override
     public void notifyObservers() {
-
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 }

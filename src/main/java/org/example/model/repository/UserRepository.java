@@ -19,7 +19,7 @@ public class UserRepository extends AbstractRepository<User>{
             TypedQuery<User> query = session.createQuery(cq);
             return query.getSingleResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }

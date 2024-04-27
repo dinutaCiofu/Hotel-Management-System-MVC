@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class EmployeeRoomsController extends ClientRoomsController {
@@ -24,6 +23,11 @@ public class EmployeeRoomsController extends ClientRoomsController {
         this.roomsView = roomsView;
         this.roomRepository = new RoomRepository();
         this.hotelRepository = new HotelRepository();
+        this.roomsView.getAddRoomButton().addActionListener(e -> this.addRoom());
+        this.roomsView.getUpdateButton().addActionListener(e -> this.updateRoom());
+        this.roomsView.getDeleteButton().addActionListener(e -> this.deleteRoom());
+        this.roomsView.getFilterBtn().addActionListener(e -> populateTableAfterFilter(List.of(RoomFacilities.AC, RoomFacilities.TV)));
+        this.roomsView.getSearchButton().addActionListener(e -> populateTableAfterSearch());
     }
 
     private Room roomFromStrings(String numberRoom, String price, String isAvailable, String floor, Hotel hotel) {
@@ -37,26 +41,27 @@ public class EmployeeRoomsController extends ClientRoomsController {
         return room;
     }
 
-    public void addCamera() {
-        String numberRoom = roomsView.getRoomNumber();
-        String price = roomsView.getPriceRoom();
-        String isAvailable = roomsView.getAvailability();
-        String floor = roomsView.getFloor();
-        String location = roomsView.getLocation();
+    public void addRoom() {
+        String numberRoom = roomsView.getNumberRoomTextField().getText();
+        String price = roomsView.getPriceTextField().getText();
+        String isAvailable = roomsView.getIsAvailableTextField().getText();
+        String floor = roomsView.getFloorTextField().getText();
+        String location = roomsView.getLocationTextField().getText();
         Hotel hotel = hotelRepository.findByName(location);
         if (hotel != null) {
             Room room = roomFromStrings(numberRoom, price, isAvailable, floor, hotel);
             hotel.getRooms().add(room);
             roomRepository.save(room);
             hotelRepository.update(hotel);
+            roomsView.update();
         }
     }
 
-    public void updateCamera() {
+    public void updateRoom() {
         DefaultTableModel model = (DefaultTableModel) roomsView.getTable().getModel();
         int selectedRow = roomsView.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            UUID id = (UUID) model.getValueAt(selectedRow, 0);
+            Integer id = (Integer) model.getValueAt(selectedRow, 0);
             String numberRoom = (String) model.getValueAt(selectedRow, 1);
             String price = (String) model.getValueAt(selectedRow, 2);
             String isAvailable = (String) model.getValueAt(selectedRow, 3);
@@ -67,16 +72,17 @@ public class EmployeeRoomsController extends ClientRoomsController {
                 Room room = roomFromStrings(numberRoom, price, isAvailable, floor, hotel);
                 room.setId(id);
                 roomRepository.update(room);
+                roomsView.update();
             }
 
         }
     }
 
-    public void deleteCamera() {
+    public void deleteRoom() {
         DefaultTableModel model = (DefaultTableModel) roomsView.getTable().getModel();
         int selectedRow = roomsView.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            UUID id = (UUID) model.getValueAt(selectedRow, 0);
+            Integer id = (Integer) model.getValueAt(selectedRow, 0);
             String location = (String) model.getValueAt(selectedRow, 5);
             Hotel hotel = hotelRepository.findByName(location);
             if (hotel != null) {
@@ -85,6 +91,7 @@ public class EmployeeRoomsController extends ClientRoomsController {
                 hotelRepository.update(hotel);
                 roomRepository.delete(room);
                 model.removeRow(selectedRow);
+                roomsView.update();
             }
         }
     }

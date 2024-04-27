@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="tema1_mvp@localhost" uuid="c6fd79fe-da94-4f41-ae4d-c9d8aca97ab9">
+    <data-source source="LOCAL" name="tema3_mvc@localhost" uuid="24bc75fb-4faa-4c98-a3e3-8460e10abf9c">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/tema1_mvp</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="102e9b3f-a4f9-4dfc-a4b6-e3ddd855b1fa">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>Hibernate
-
-E:/Anul 3/PS/Tema 1/Lant Hotelier MVP/src/main/resources/hibernate.cfg.xml</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/tema1_mvp</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/tema3_mvc</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

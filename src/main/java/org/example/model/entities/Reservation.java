@@ -10,39 +10,38 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "hotel")
 @Component
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel  implements Comparable<Hotel>, Subject {
+public class Reservation implements Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull
-    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @NotNull
-    private String address;
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
 
     @NotNull
-    private Integer nrRooms;
-
-    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Room> rooms;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
 
     @Transient
     private List<Observer> observers = new ArrayList<>();
-
-    @Override
-    public int compareTo(Hotel o) {
-        return this.name.compareTo(o.getName());
-    }
 
     @Override
     public void attach(Observer o) {
@@ -56,13 +55,8 @@ public class Hotel  implements Comparable<Hotel>, Subject {
 
     @Override
     public void notifyObservers() {
-        for(Observer observer : observers){
+        for (Observer observer : observers) {
             observer.update();
         }
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
-        notifyObservers();
     }
 }

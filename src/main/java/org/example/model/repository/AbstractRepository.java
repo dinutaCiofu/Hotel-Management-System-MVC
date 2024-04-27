@@ -9,7 +9,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-import java.util.UUID;
 
 public class AbstractRepository <T>{
     public void save(Object o){
@@ -22,7 +21,7 @@ public class AbstractRepository <T>{
             if (transaction != null){
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -36,7 +35,7 @@ public class AbstractRepository <T>{
             if (transaction != null){
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());;
         }
     }
 
@@ -50,7 +49,7 @@ public class AbstractRepository <T>{
             if (transaction != null){
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());;
         }
     }
 
@@ -65,7 +64,7 @@ public class AbstractRepository <T>{
         return allQuery.getResultList();
     }
 
-    public <T> T findById(UUID id){
+    public <T> T findById(Integer id){
         Transaction transaction = null;
         T object = null;
         Class <T> type=(Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -77,7 +76,7 @@ public class AbstractRepository <T>{
             if(transaction!=null){
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return object;
     }

@@ -19,7 +19,7 @@ public class HotelRepository extends AbstractRepository<Hotel>{
             TypedQuery<Hotel> query = session.createQuery(cq);
             return query.getSingleResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }

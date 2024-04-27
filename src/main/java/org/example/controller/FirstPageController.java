@@ -16,13 +16,13 @@ public class FirstPageController {
     }
 
     public void changeWindow(){
-        UserType selectedOption = firstPageView.getSelectedOption();
+        UserType selectedOption = (UserType) firstPageView.getUserTypeComboBox().getSelectedItem();
         if(selectedOption == UserType.ADMINISTRATOR || selectedOption == UserType.EMPLOYEE){
             LoginView loginView = new LoginView(selectedOption);
             GUIFrameSinglePointAccess.changePanel(loginView.getMainPanel(), "Login");
         }else{
             RoomsView roomsView = new RoomsView(selectedOption);
-            GUIFrameSinglePointAccess.changePanel(roomsView.getMainPanel(), "Rooms");
+            GUIFrameSinglePointAccess.changePanel(roomsView.getMainJPanel(), "Rooms");
         }
     }
 }

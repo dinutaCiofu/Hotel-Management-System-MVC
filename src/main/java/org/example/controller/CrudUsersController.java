@@ -1,8 +1,8 @@
 package org.example.controller;
 
-import org.example.model.entities.UserTypeMapper;
 import org.example.model.entities.User;
 import org.example.model.entities.UserType;
+import org.example.model.entities.UserTypeMapper;
 import org.example.model.repository.UserRepository;
 import org.example.single_point_access.GUIFrameSinglePointAccess;
 import org.example.view.CrudUsersView;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -23,6 +22,10 @@ public class CrudUsersController {
         this.crudUsersView = crudUsersView;
         this.userRepository = new UserRepository();
         populateTable();
+        crudUsersView.getAddUserButton().addActionListener(e -> this.addUser());
+        crudUsersView.getUpdateUserButton().addActionListener(e -> this.updateUser());
+        crudUsersView.getDeleteUserButton().addActionListener(e -> this.deleteUser());
+        crudUsersView.getBackButton().addActionListener(e -> this.backBtnListener());
     }
 
     public void backBtnListener() {
@@ -34,12 +37,7 @@ public class CrudUsersController {
         DefaultTableModel model = new DefaultTableModel();
         List<String> columns = List.of("ID", "name", "email", "password", "user type");
         model.setRowCount(0);
-        model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return true;
-            }
-        };
+        model = new DefaultTableModel() {};
 
         for (String column : columns) {
             model.addColumn(column);
@@ -49,7 +47,7 @@ public class CrudUsersController {
 
     public void setTableRows(DefaultTableModel model, List<User> users) {
         for (User user : users) {
-            UUID id = user.getId();
+            Integer id = user.getId();
             String name = user.getName();
             String email = user.getEmail();
             String password = user.getPassword();
@@ -58,34 +56,32 @@ public class CrudUsersController {
         }
     }
 
-    public DefaultTableModel populateTable() {
+    public void populateTable() {
         DefaultTableModel model = setTableColumns();
         List<User> users = userRepository.readAll().stream()
                 .filter(user -> user.getUserType() == UserType.EMPLOYEE || user.getUserType() == UserType.ADMINISTRATOR)
                 .collect(Collectors.toList());
         setTableRows(model, users);
-        crudUsersView.setTable(model);
-        return model;
+        crudUsersView.getTableClients().setModel(model);
     }
 
     public void addUser() {
-        String name = crudUsersView.getName();
-        String email = crudUsersView.getEmail();
-        String password = crudUsersView.getPassword();
-        UserType userType = UserTypeMapper.mapToUserType(crudUsersView.getUserType());
+        String name = crudUsersView.getName().getText();
+        String email = crudUsersView.getEmail().getText();
+        String password = crudUsersView.getPassword().getText();
+        UserType userType = UserTypeMapper.mapToUserType(crudUsersView.getUserTypeTextField().getText());
         User user = userRepository.findByEmail(email);
         if (user == null) {
             user = new User();
-            user.setUserType(UserType.CLIENT);
             user.setName(name);
             user.setEmail(email);
             user.setPassword(password);
             user.setUserType(userType);
             userRepository.save(user);
-            crudUsersView.setEmail("");
-            crudUsersView.setName("");
-            crudUsersView.setPassword("");
-            crudUsersView.setUserType("");
+            crudUsersView.getEmail().setText("");
+            crudUsersView.getName().setText("");
+            crudUsersView.getPassword().setText("");
+            crudUsersView.getUserTypeTextField().setText("");
             populateTable();
         } else {
             System.out.println("User existing already!");
@@ -93,14 +89,14 @@ public class CrudUsersController {
     }
 
     public void updateUser() {
-        DefaultTableModel model = (DefaultTableModel) crudUsersView.getTable().getModel();
-        int selectedRow = crudUsersView.getTable().getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) crudUsersView.getTableClients().getModel();
+        int selectedRow = crudUsersView.getTableClients().getSelectedRow();
         if (selectedRow != -1) {
-            UUID id = (UUID) model.getValueAt(selectedRow, 0);
             String name = (String) model.getValueAt(selectedRow, 1);
             String email = (String) model.getValueAt(selectedRow, 2);
             String password = (String) model.getValueAt(selectedRow, 3);
             String userType = (String) model.getValueAt(selectedRow, 4);
+            Integer id = (Integer) model.getValueAt(selectedRow, 0);
             User user = userRepository.findById(id);
             if (user != null) {
                 user.setName(name);
@@ -108,6 +104,7 @@ public class CrudUsersController {
                 user.setPassword(password);
                 user.setUserType(UserTypeMapper.mapToUserType(userType));
                 userRepository.update(user);
+                populateTable();
             } else {
                 System.out.println("User not found.");
             }
@@ -115,14 +112,15 @@ public class CrudUsersController {
     }
 
     public void deleteUser() {
-        DefaultTableModel model = (DefaultTableModel) crudUsersView.getTable().getModel();
-        int selectedRow = crudUsersView.getTable().getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) crudUsersView.getTableClients().getModel();
+        int selectedRow = crudUsersView.getTableClients().getSelectedRow();
         if (selectedRow != -1) {
-            UUID id = (UUID) model.getValueAt(selectedRow, 0);
+            Integer id = (Integer) model.getValueAt(selectedRow, 0);
             User user = userRepository.findById(id);
             if (user != null) {
                 userRepository.delete(user);
                 model.removeRow(selectedRow);
+                populateTable();
             } else {
                 System.out.println("User not found.");
             }

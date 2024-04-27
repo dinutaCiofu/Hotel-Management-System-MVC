@@ -23,17 +23,17 @@ public class LoginController {
 
     public void login(UserType userLogged){
         List<User> users = userRepository.readAll();
-        String email = loginView.getEmail();
-        String password = loginView.getPassword();
+        String email = loginView.getEmailTextField().getText();
+        String password = new String(loginView.getPasswordField().getPassword());
 
-        for(User user : users){
+        for(User user : users) {
             if(user.getEmail().equals(email) && user.getPassword().equals(password)){
-                if(userLogged == UserType.EMPLOYEE){
+                if(userLogged == UserType.EMPLOYEE) {
                     EmployeeMenuView employeeMenuView = new EmployeeMenuView();
                     GUIFrameSinglePointAccess.changePanel(employeeMenuView.getMainPanel(), "Menu");
                 } else if (userLogged == UserType.ADMINISTRATOR) {
                     AdminMenuView adminMenuView = new AdminMenuView();
-                    GUIFrameSinglePointAccess.changePanel(adminMenuView.getJPanel(), "Menu");
+                    GUIFrameSinglePointAccess.changePanel(adminMenuView.getMainJPanel(), "Menu");
                 }
             }
         }
