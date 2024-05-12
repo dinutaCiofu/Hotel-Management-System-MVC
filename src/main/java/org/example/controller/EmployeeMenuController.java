@@ -16,6 +16,8 @@ public class EmployeeMenuController {
         employeeMenuView.getCRUDRoomsButton().addActionListener(e -> this.CRUDRoomsListener());
         employeeMenuView.getCRUDClientsButton().addActionListener(e -> this.CRUDClientsListener());
         employeeMenuView.getBackButton().addActionListener(e -> this.backBtnListener());
+        employeeMenuView.getReservationButton().addActionListener(e -> this.reservationBtnListener());
+        employeeMenuView.getStatisticsBtn().addActionListener(e -> this.statisticsBtnListener());
     }
 
     public void CRUDRoomsListener(){
@@ -31,5 +33,15 @@ public class EmployeeMenuController {
     public void backBtnListener(){
         FirstPageView firstPageView = new FirstPageView();
         GUIFrameSinglePointAccess.changePanel(firstPageView.getMainPanel(), "First page");
+    }
+
+    public void reservationBtnListener(){
+        ReservationView reservationView = new ReservationView();
+        GUIFrameSinglePointAccess.changePanel(reservationView.getMainPanel(), "Reservation page");
+    }
+
+    public void statisticsBtnListener(){
+        RoomStatisticsView roomStatisticsView = new RoomStatisticsView();
+        GUIFrameSinglePointAccess.changePanel(roomStatisticsView, "Statistics");
     }
 }

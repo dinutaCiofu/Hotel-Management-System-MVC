@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import lombok.Getter;
 import org.example.controller.LoginController;
 import org.example.model.entities.UserType;
+import org.example.utils.LanguageManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,8 @@ public class LoginView implements Observer {
         this.userLogged = userType;
         loginController = new LoginController(this);
         loginButton.addActionListener(e -> loginController.login(userLogged));
+        emailLabel.setText(LanguageManager.getString("emailLabel"));
+        passwordLabel.setText(LanguageManager.getString("passwordLabel"));
     }
 
     {
@@ -51,11 +54,9 @@ public class LoginView implements Observer {
         mainPanel.add(formPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         emailLabel = new JLabel();
         emailLabel.setForeground(new Color(-16760389));
-        emailLabel.setText("Email:");
         formPanel.add(emailLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         passwordLabel = new JLabel();
         passwordLabel.setForeground(new Color(-16760389));
-        passwordLabel.setText("Password:");
         formPanel.add(passwordLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         emailTextField = new JTextField();
         emailTextField.setBackground(new Color(-6308366));

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,6 +27,7 @@ public class CrudUsersController {
         crudUsersView.getUpdateUserButton().addActionListener(e -> this.updateUser());
         crudUsersView.getDeleteUserButton().addActionListener(e -> this.deleteUser());
         crudUsersView.getBackButton().addActionListener(e -> this.backBtnListener());
+        crudUsersView.getFiltrareButton().addActionListener(e -> this.populatetTableAfterFilter());
     }
 
     public void backBtnListener() {
@@ -47,7 +49,7 @@ public class CrudUsersController {
 
     public void setTableRows(DefaultTableModel model, List<User> users) {
         for (User user : users) {
-            Integer id = user.getId();
+            Long id = user.getId();
             String name = user.getName();
             String email = user.getEmail();
             String password = user.getPassword();
@@ -56,15 +58,29 @@ public class CrudUsersController {
         }
     }
 
-    public void populateTable() {
+    public DefaultTableModel populateTable() {
         DefaultTableModel model = setTableColumns();
         List<User> users = userRepository.readAll().stream()
                 .filter(user -> user.getUserType() == UserType.EMPLOYEE || user.getUserType() == UserType.ADMINISTRATOR)
                 .collect(Collectors.toList());
         setTableRows(model, users);
         crudUsersView.getTableClients().setModel(model);
+        return model;
     }
 
+    public void populatetTableAfterFilter(){
+        DefaultTableModel model = setTableColumns();
+        List<User> users = userRepository.readAll();
+        if(Objects.requireNonNull(crudUsersView.getFilterByComboBox().getSelectedItem()).equals("Employee")){
+             users = users.stream()
+                    .filter(user -> user.getUserType() == UserType.EMPLOYEE).toList();
+        } else if (Objects.requireNonNull(crudUsersView.getFilterByComboBox().getSelectedItem()).equals("Administrator")){
+            users = users.stream()
+                    .filter(user -> user.getUserType() == UserType.ADMINISTRATOR).toList();
+        }
+        setTableRows(model, users);
+        crudUsersView.setTableClients(model);
+    }
     public void addUser() {
         String name = crudUsersView.getName().getText();
         String email = crudUsersView.getEmail().getText();
@@ -82,7 +98,7 @@ public class CrudUsersController {
             crudUsersView.getName().setText("");
             crudUsersView.getPassword().setText("");
             crudUsersView.getUserTypeTextField().setText("");
-            populateTable();
+            crudUsersView.update();
         } else {
             System.out.println("User existing already!");
         }
@@ -96,7 +112,7 @@ public class CrudUsersController {
             String email = (String) model.getValueAt(selectedRow, 2);
             String password = (String) model.getValueAt(selectedRow, 3);
             String userType = (String) model.getValueAt(selectedRow, 4);
-            Integer id = (Integer) model.getValueAt(selectedRow, 0);
+            Long id = (Long) model.getValueAt(selectedRow, 0);
             User user = userRepository.findById(id);
             if (user != null) {
                 user.setName(name);
@@ -104,7 +120,7 @@ public class CrudUsersController {
                 user.setPassword(password);
                 user.setUserType(UserTypeMapper.mapToUserType(userType));
                 userRepository.update(user);
-                populateTable();
+                crudUsersView.update();
             } else {
                 System.out.println("User not found.");
             }
@@ -115,15 +131,16 @@ public class CrudUsersController {
         DefaultTableModel model = (DefaultTableModel) crudUsersView.getTableClients().getModel();
         int selectedRow = crudUsersView.getTableClients().getSelectedRow();
         if (selectedRow != -1) {
-            Integer id = (Integer) model.getValueAt(selectedRow, 0);
+            Long id = (Long) model.getValueAt(selectedRow, 0);
             User user = userRepository.findById(id);
             if (user != null) {
                 userRepository.delete(user);
                 model.removeRow(selectedRow);
-                populateTable();
+                crudUsersView.update();
             } else {
                 System.out.println("User not found.");
             }
         }
     }
+
 }

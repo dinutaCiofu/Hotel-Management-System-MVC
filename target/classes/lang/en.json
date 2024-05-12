@@ -1,0 +1,58 @@
+{
+  "userTypeLabel": "Choose user type",
+  "languageLabel": "Choose language",
+  "okBtn": "OK",
+
+  "titleLabel": "Rooms Management",
+  "addRoomButton": "Add Room",
+  "updateButton": "Update Room",
+  "deleteButton": "Delete Room",
+  "searchButton": "Search",
+  "filterByLabel": "Filter By",
+  "searchLabel": "Search By",
+  "addImgBtn": "Add Images",
+  "numberRoomField": "Room Number",
+  "priceField": "Price",
+  "isAvailableField": "Is Available",
+  "floorField": "Floor",
+  "locationField": "Location",
+
+  "facilities": "Facilities",
+  "availability": "Availability",
+  "price": "Price",
+  "filterBtn": "Filter",
+
+  "emailLabel": "Email:",
+  "passwordLabel": "Password:",
+  "loginButton": "Login",
+
+  "labelTitle": "Room Reservation",
+  "labelSelectRoom": "Select Room",
+  "labelSelectClient": "Select Client",
+  "buttonBack": "Back",
+  "buttonReservation": "Reserve",
+
+
+  "CRUDRoomsButton": "Manage Rooms",
+  "CRUDClientsButton": "Manage Clients",
+  "reservationButton": "Reservations",
+  "statisticsBtn": "Statistics",
+
+
+  "nameLabel": "Name",
+  "addUserButton": "Add User",
+  "updateUserButton": "Update User",
+  "deleteUserButton": "Delete User",
+  "backButton": "Back",
+  "usersListLabel": "Users List:",
+
+
+  "addClientButton": "Add Client",
+  "updateClientButton": "Update Client",
+  "deleteClientButton": "Delete Client",
+  "clientsListLabel": "Clients list:",
+
+  "CRUDUsersButton": "CRUD users",
+
+  "chartTitle": "Room Statistics"
+}

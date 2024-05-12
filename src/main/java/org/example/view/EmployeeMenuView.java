@@ -12,6 +12,8 @@ public class EmployeeMenuView implements Observer {
     private JButton CRUDClientsButton;
     private JButton backButton;
     private JPanel mainPanel;
+    private JButton reservationButton;
+    private JButton statisticsBtn;
     private final EmployeeMenuController employeeMenuController;
 
     {

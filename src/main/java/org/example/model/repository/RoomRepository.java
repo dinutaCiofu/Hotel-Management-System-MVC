@@ -9,7 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 @Repository
-public class RoomRepository extends AbstractRepository<Room>{
+public class RoomRepository extends AbstractRepository<Room> {
     public Room findRoomByNumber(String nrRoom) {
         try (var session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -23,4 +23,6 @@ public class RoomRepository extends AbstractRepository<Room>{
             return null;
         }
     }
+
+
 }

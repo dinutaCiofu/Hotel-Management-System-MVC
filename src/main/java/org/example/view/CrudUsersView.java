@@ -6,7 +6,9 @@ import lombok.Getter;
 import org.example.controller.CrudUsersController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 @Getter
 public class CrudUsersView implements Observer {
@@ -22,6 +24,8 @@ public class CrudUsersView implements Observer {
     private JTable tableClients;
     private JButton backButton;
     private JButton deleteUserButton;
+    private JComboBox filterByComboBox;
+    private JButton filtrareButton;
     private final CrudUsersController crudUsersController;
 
     {
@@ -30,6 +34,7 @@ public class CrudUsersView implements Observer {
 
     public CrudUsersView() {
         crudUsersController = new CrudUsersController(this);
+        initComponents();
     }
 
 
@@ -96,8 +101,30 @@ public class CrudUsersView implements Observer {
         return mainJPanel;
     }
 
+    private java.util.List<String> generateFilterList() {
+        java.util.List<String> filterList = new ArrayList<>();
+        filterList.add("Administrator");
+        filterList.add("Employee");
+        return filterList;
+    }
+
+    public void setTableClients(DefaultTableModel tableClientsModel) {
+        this.tableClients.setModel(tableClientsModel);
+    }
+
+    private void initComponents(){
+        DefaultComboBoxModel<Object> list = new DefaultComboBoxModel<>(generateFilterList().toArray());
+        filterByComboBox.setModel(list);
+    }
+
     @Override
     public void update() {
-
+        DefaultTableModel model = crudUsersController.populateTable();
+        tableClients.setModel(model);
+        tableClients.repaint();
+        email.setText("");
+        password.setText("");
+        name.setText("");
+        userTypeTextField.setText("");
     }
 }

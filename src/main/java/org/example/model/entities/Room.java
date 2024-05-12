@@ -21,7 +21,7 @@ import java.util.List;
 public class Room implements Comparable<Room>, Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotNull
     private String nrRoom;
@@ -45,8 +45,11 @@ public class Room implements Comparable<Room>, Subject {
     @JoinColumn(name = "location")
     private Hotel location;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
     private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<Image> images;
 
     @Transient
     private List<Observer> observers = new ArrayList<>();

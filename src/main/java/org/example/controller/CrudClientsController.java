@@ -40,7 +40,7 @@ public class CrudClientsController {
 
     public void setTableRows(DefaultTableModel model, List<User> users) {
         for (User user : users) {
-            Integer id = user.getId();
+            Long id = user.getId();
             String name = user.getName();
             String email = user.getEmail();
             String password = user.getPassword();
@@ -82,7 +82,7 @@ public class CrudClientsController {
         DefaultTableModel model = (DefaultTableModel) crudClientsView.getTableClients().getModel();
         int selectedRow = crudClientsView.getTableClients().getSelectedRow();
         if (selectedRow != -1) {
-            Integer id = (Integer) model.getValueAt(selectedRow, 0);
+            Long id = (Long) model.getValueAt(selectedRow, 0);
             String name = (String) model.getValueAt(selectedRow, 1);
             String email = (String) model.getValueAt(selectedRow, 2);
             String password = (String) model.getValueAt(selectedRow, 3);
@@ -108,7 +108,7 @@ public class CrudClientsController {
         DefaultTableModel model = (DefaultTableModel) crudClientsView.getTableClients().getModel();
         int selectedRow = crudClientsView.getTableClients().getSelectedRow();
         if (selectedRow != -1) {
-            Integer id = (Integer) model.getValueAt(selectedRow, 0);
+            Long id = (Long) model.getValueAt(selectedRow, 0);
             User client = userRepository.findById(id);
             if (client != null) {
                 userRepository.delete(client);

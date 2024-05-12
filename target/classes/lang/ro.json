@@ -1,0 +1,55 @@
+{
+  "userTypeLabel": "Alegeti tipul de utilizator",
+  "languageLabel": "Limba:",
+  "okBtn": "OK",
+
+  "titleLabel": "Gestionare Camere",
+  "addRoomButton": "Adaugă Cameră",
+  "updateButton": "Actualizează Cameră",
+  "deleteButton": "Șterge Cameră",
+  "searchButton": "Caută",
+  "filterByLabel": "Filtrează După",
+  "searchLabel": "Caută După",
+  "addImgBtn": "Adaugă Imagini",
+  "numberRoomField": "Număr Cameră",
+  "priceField": "Preț",
+  "isAvailableField": "Disponibil",
+  "floorField": "Etaj",
+  "locationField": "Locație",
+  "facilities": "Facilitati",
+  "availability": "Disponibilitate",
+  "price": "Pret",
+  "filterBtn": "Filtrare",
+
+  "emailLabel": "Email:",
+  "passwordLabel": "Parolă:",
+  "loginButton": "Autentificare",
+
+  "labelTitle": "Rezervare cameră",
+  "labelSelectRoom": "Selectează camera",
+  "labelSelectClient": "Selectează clientul",
+  "buttonBack": "Înapoi",
+  "buttonReservation": "Rezervare",
+
+  "CRUDRoomsButton": "Gestionare Camere",
+  "CRUDClientsButton": "Gestionare Clienți",
+  "reservationButton": "Rezervări",
+  "statisticsBtn": "Statistici",
+
+  "nameLabel": "Nume",
+  "addUserButton": "Adaugă Utilizator",
+  "updateUserButton": "Actualizează Utilizator",
+  "deleteUserButton": "Șterge Utilizator",
+  "backButton": "Înapoi",
+  "usersListLabel": "Lista Utilizatorilor:",
+
+
+  "addClientButton": "Adaugă Client",
+  "updateClientButton": "Actualizează Client",
+  "deleteClientButton": "Șterge Client",
+  "clientsListLabel": "Lista Clienților:",
+
+  "CRUDUsersButton": "Administrare utilizatori",
+
+  "chartTitle": "Statistici Camere"
+}

@@ -1,0 +1,58 @@
+{
+  "userTypeLabel": "Elija tipo de usuario",
+  "languageLabel": "Idioma:",
+  "okBtn": "OK",
+
+  "titleLabel": "Gestión de Habitaciones",
+  "addRoomButton": "Añadir Habitación",
+  "updateButton": "Actualizar Habitación",
+  "deleteButton": "Eliminar Habitación",
+  "searchButton": "Buscar",
+  "filterByLabel": "Filtrar Por",
+  "searchLabel": "Buscar Por",
+  "addImgBtn": "Añadir Imágenes",
+  "numberRoomField": "Número de Habitación",
+  "priceField": "Precio",
+  "isAvailableField": "Disponible",
+  "floorField": "Piso",
+  "locationField": "Ubicación",
+
+  "facilities": "Facilidades",
+  "availability": "Disponibilidad",
+  "price": "Precio",
+  "filterBtn": "Filtrar",
+
+
+  "emailLabel": "Correo Electrónico:",
+  "passwordLabel": "Contraseña:",
+  "loginButton": "Iniciar sesión",
+
+
+  "labelTitle": "Reserva de habitación",
+  "labelSelectRoom": "Seleccionar habitación",
+  "labelSelectClient": "Seleccionar cliente",
+  "buttonBack": "Atrás",
+  "buttonReservation": "Reservar",
+
+  "CRUDRoomsButton": "Administrar Habitaciones",
+  "CRUDClientsButton": "Administrar Clientes",
+  "reservationButton": "Reservaciones",
+  "statisticsBtn": "Estadísticas",
+
+
+  "nameLabel": "Nombre",
+  "addUserButton": "Agregar Usuario",
+  "updateUserButton": "Actualizar Usuario",
+  "deleteUserButton": "Eliminar Usuario",
+  "backButton": "Atrás",
+  "usersListLabel": "Lista de Usuarios:",
+
+  "addClientButton": "Agregar Cliente",
+  "updateClientButton": "Actualizar Cliente",
+  "deleteClientButton": "Eliminar Cliente",
+  "clientsListLabel": "Lista de Clientes:",
+
+  "CRUDUsersButton": "CRUD de usuarios",
+
+  "chartTitle": "Estadísticas de Habitaciones"
+}

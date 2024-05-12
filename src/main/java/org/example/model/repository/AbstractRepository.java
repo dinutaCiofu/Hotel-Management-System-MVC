@@ -64,7 +64,7 @@ public class AbstractRepository <T>{
         return allQuery.getResultList();
     }
 
-    public <T> T findById(Integer id){
+    public <T> T findById(Long id){
         Transaction transaction = null;
         T object = null;
         Class <T> type=(Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];

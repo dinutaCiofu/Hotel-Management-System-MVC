@@ -26,5 +26,6 @@
         <mapping class="org.example.model.entities.UserType"/>
         <mapping class="org.example.model.entities.User"/>
         <mapping class="org.example.model.entities.Reservation"/>
+        <mapping class="org.example.model.entities.Image"/>
     </session-factory>
 </hibernate-configuration>

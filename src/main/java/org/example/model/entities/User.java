@@ -21,7 +21,7 @@ import java.util.List;
 public class User implements Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotNull
     private String name;
@@ -36,7 +36,7 @@ public class User implements Subject {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER)
     private List<Reservation> reservations;
 
     @Transient

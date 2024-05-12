@@ -23,7 +23,7 @@ import java.util.Set;
 public class Hotel  implements Comparable<Hotel>, Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @NotNull
     private String name;
 
@@ -31,7 +31,7 @@ public class Hotel  implements Comparable<Hotel>, Subject {
     private String address;
 
     @NotNull
-    private Integer nrRooms;
+    private Long nrRooms;
 
     @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Room> rooms;
